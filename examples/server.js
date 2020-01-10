@@ -9,7 +9,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
 const path = require('path')
 
-require('./server-config')
+require('./server-more')
 
 const app = express()
 const compiler = webpack(WebpackConfig)
@@ -61,19 +61,21 @@ registerMoreRouter()
 
 app.use(router)
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 9010
 module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`)
 })
 
+// simple
 function registerSimpleRouter() {
   router.get('/simple/get', function (req, res) {
     res.json({
-      msg: `hello world`
+      msg: `hello world123`
     })
   })
 }
 
+// base
 function registerBaseRouter() {
   router.get('/base/get', function (req, res) {
     res.json(req.query)
