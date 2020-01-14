@@ -81,10 +81,12 @@ function registerBaseRouter() {
     res.json(req.query)
   })
 
+  // 对header进行处理
   router.post('/base/post', function (req, res) {
     res.json(req.body)
   })
 
+  // Int32Array buffer形式
   router.post('/base/buffer', function (req, res) {
     let msg = []
     req.on('data', (chunk) => {

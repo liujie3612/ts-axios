@@ -1,7 +1,6 @@
 import {
   isDate,
   isPlainObject,
-  isURLSearchParams
 } from './util'
 
 function encode(val: string): string {
