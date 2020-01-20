@@ -22,13 +22,17 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
+  // 字符串的索引签名
+  [propName: string]: any
 }
 
 export interface AxiosResponse<T = any> {
   data: T
   status: number
   statusText: string
-  headers: any // 响应头
+  headers: any
   config: AxiosRequestConfig
   request: any
 }
@@ -44,21 +48,57 @@ export interface AxiosError extends Error {
 }
 
 export interface Axios {
-  // 请求允许传入具体的类型,请求什么类型，就返回什么类型
+  defaults: AxiosRequestConfig
+  interceptors: {
+    request: AxiosInterceptorManager<AxiosRequestConfig>
+    response: AxiosInterceptorManager<AxiosResponse>
+  }
+
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
+
   get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+
   delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+
   head<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+
   options<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 
   post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+
   put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+
   patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
 // 混合类型接口
 export interface AxiosInstance extends Axios {
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
-  // 函数重载
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+}
+
+export interface AxiosClassStatic {
+  new (config: AxiosRequestConfig): Axios
+}
+
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance
+}
+
+export interface AxiosInterceptorManager<T> {
+  // rejected可以不传
+  use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number // number为拦截器的id
+  eject(id: number): void
+}
+
+export interface ResolvedFn<T = any> {
+  (val: T): T | Promise<T>
+}
+
+export interface RejectedFn {
+  (error: any): any
+}
+
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }
