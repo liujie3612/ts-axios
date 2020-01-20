@@ -1,7 +1,4 @@
-import {
-  isDate,
-  isPlainObject,
-} from './util'
+import { isDate, isPlainObject } from './util'
 
 function encode(val: string): string {
   return encodeURIComponent(val)
@@ -14,7 +11,7 @@ function encode(val: string): string {
     .replace(/%5D/gi, ']')
 }
 
-export function buildURL(url: string, params ? : any): string {
+export function buildURL(url: string, params?: any): string {
   if (!params) {
     return url
   }
