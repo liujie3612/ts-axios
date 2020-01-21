@@ -81,7 +81,6 @@ import axios from '../../src/index'
 //   data: arr
 // })
 
-
 // 三、content-type
 
 // 注：
@@ -110,7 +109,6 @@ import axios from '../../src/index'
 //   }
 // })
 
-
 // const paramsString = 'q=URLUtils.searchParams&topic=api'
 // const searchParams = new URLSearchParams(paramsString)
 
@@ -120,10 +118,8 @@ import axios from '../../src/index'
 //   data: searchParams
 // })
 
-
 // 四、获取响应数据
 
-// tslint:disable-next-line: no-floating-promises
 axios({
   method: 'post',
   url: '/base/post',
@@ -131,11 +127,12 @@ axios({
     a: 1,
     b: 2
   }
-}).then((res) => {
-  console.log(res)
 })
+  .then(res => {
+    console.log(res)
+  })
+  .catch(err => console.error(err))
 
-// tslint:disable-next-line: no-floating-promises
 axios({
   method: 'post',
   url: '/base/post',
@@ -144,6 +141,8 @@ axios({
     a: 3,
     b: 4
   }
-}).then((res) => {
-  console.log(res)
 })
+  .then(res => {
+    console.log(res)
+  })
+  .catch(err => console.error(err))

@@ -1,11 +1,12 @@
 import xhr from './xhr'
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from '../types'
-import { buildURL } from '../helpers/url'
-import { transformRequest, transformResponse } from '../helpers/data'
-import { processHeaders, flattenHeaders } from '../helpers/headers'
+import { buildURL, isAbsoluteURL, combineURL } from '../helpers/url'
+// import { transformRequest, transformResponse } from '../helpers/data'
+import { flattenHeaders } from '../helpers/headers'
 import transform from './transform'
 
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
+  throwIfCancellationRequested(config) // 已经cancel就不会再发送请求
   processConfig(config)
   return xhr(config).then(res => {
     return transformResponseData(res)
@@ -20,16 +21,26 @@ function processConfig(config: AxiosRequestConfig): void {
 }
 
 // URL
-function transformURL(config: AxiosRequestConfig): string {
-  const { url, params } = config
+export function transformURL(config: AxiosRequestConfig): string {
+  let { url, params, paramsSerializer, baseURL } = config
+  // 配置了baseURL并且url不是绝对的
+  if (baseURL && !isAbsoluteURL(url!)) {
+    url = combineURL(baseURL, url)
+  }
   // 类型断言肯定不为空
-  return buildURL(url!, params)
+  return buildURL(url!, params, paramsSerializer)
 }
 
 // 都是服务端返回的结果，参数和返回的是一样的
 function transformResponseData(res: AxiosResponse): AxiosResponse {
   res.data = transform(res.data, res.headers, res.config.transformResponse)
   return res
+}
+
+function throwIfCancellationRequested(config: AxiosRequestConfig): void {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested()
+  }
 }
 
 // // Data

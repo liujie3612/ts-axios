@@ -13,7 +13,7 @@ app.use(cookieParser())
 const router = express.Router()
 
 const cors = {
-  'Access-Control-Allow-Origin': 'http://localhost:9010',
+  'Access-Control-Allow-Origin': 'http://127.0.0.1:9010',
   'Access-Control-Allow-Credentials': true,
   'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type'
@@ -31,5 +31,5 @@ router.options('/more/server2', function (req, res) {
 
 app.use(router)
 
-const port = 9000
+const port = 8088
 module.exports = app.listen(port)

@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser())
 
 app.use(multipart({
-  uploadDir: path.resolve(__dirname, 'upload-file')
+  uploadDir: path.resolve(__dirname, 'more/upload-file')
 }))
 
 const router = express.Router()
@@ -192,6 +192,7 @@ function registerCancelRouter() {
 }
 
 function registerMoreRouter() {
+  // 返回cookie
   router.get('/more/get', function (req, res) {
     res.json(req.cookies)
   })
@@ -215,6 +216,7 @@ function registerMoreRouter() {
   })
 
   router.get('/more/304', function (req, res) {
+    // 固定返回304
     res.status(304)
     res.end()
   })
