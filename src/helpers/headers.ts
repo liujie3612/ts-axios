@@ -32,7 +32,7 @@ export function parseHeaders(headers: string): any {
     return parsed
   }
   headers.split('\r\n').forEach(line => {
-    let [key, ...vals] = line.split(':')
+    let [key, ...vals] = line.split(':') // ：后面的就不要了
     key = key.trim().toLowerCase()
     if (!key) {
       return

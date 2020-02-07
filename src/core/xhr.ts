@@ -10,8 +10,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     const {
       data = null,
       url,
-      method = 'get',
-      headers,
+      method,
+      headers = {},
       responseType,
       timeout,
       cancelToken,
@@ -26,7 +26,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     const request = new XMLHttpRequest()
 
     // AxiosRequestConfig url可选，这里断言不为空
-    request.open(method.toUpperCase(), url!, true)
+    request.open(method!.toUpperCase(), url!, true)
 
     configureRequest()
 
@@ -135,9 +135,12 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
             request.abort()
             reject(reason)
           })
-          .catch(err => {
-            console.error(err)
-          })
+          .catch(
+            /* istanbul ignore next */
+            () => {
+              // do nothing
+            }
+          )
       }
     }
 

@@ -9,9 +9,9 @@ export function isDate(val: any): val is Date {
   return toString.call(val) === '[object Date]'
 }
 
-export function isObject(val: any): val is Object {
-  return val !== null && typeof val === 'object'
-}
+// export function isObject(val: any): val is Object {
+//   return val !== null && typeof val === 'object'
+// }
 
 // 判断普通对象
 export function isPlainObject(val: any): val is Object {
@@ -35,6 +35,7 @@ export function extend<T, U>(to: T, from: U): T & U {
 
 export function deepMerge(...objs: any[]): any {
   const result = Object.create(null)
+
   objs.forEach(obj => {
     if (obj) {
       Object.keys(obj).forEach(key => {

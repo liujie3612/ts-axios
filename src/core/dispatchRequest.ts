@@ -8,9 +8,17 @@ import transform from './transform'
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   throwIfCancellationRequested(config) // 已经cancel就不会再发送请求
   processConfig(config)
-  return xhr(config).then(res => {
-    return transformResponseData(res)
-  })
+  return xhr(config).then(
+    res => {
+      return transformResponseData(res)
+    },
+    e => {
+      if (e && e.response) {
+        e.response = transformResponseData(e.response)
+      }
+      return Promise.reject(e)
+    }
+  )
 }
 
 function processConfig(config: AxiosRequestConfig): void {
